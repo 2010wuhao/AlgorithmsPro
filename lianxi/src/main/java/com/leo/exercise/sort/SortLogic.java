@@ -61,4 +61,150 @@ public class SortLogic {
         }
         return nums;
     }
+
+    public static int[] insertSort1(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return nums;
+        }
+        for (int i = 1; i < nums.length; i++) {
+            int value = nums[i];
+            int j = i - 1;
+            for (; j >= 0; j--) {
+                if (nums[j] > value) {
+                    nums[j + 1] = nums[j];
+                } else {
+                    break;
+                }
+            }
+            nums[j + 1] = value;
+        }
+        return nums;
+    }
+
+    /**
+     * // 快速排序，A是数组，n表示数组的大小
+     * quick_sort(A, n) {
+     * quick_sort_c(A, 0, n-1)
+     * }
+     * // 快速排序递归函数，p,r为下标
+     * quick_sort_c(A, p, r) {
+     * if p >= r then return
+     * <p>
+     * q = partition(A, p, r) // 获取分区点
+     * quick_sort_c(A, p, q-1)
+     * quick_sort_c(A, q+1, r)
+     * }
+     */
+    public static void quickSort(int[] A, int begin, int end) {
+        if (begin >= end) {
+            return;
+        }
+        int mid = partition(A, begin, end);
+        quickSort(A, begin, mid - 1);
+        quickSort(A, mid + 1, end);
+    }
+
+    //对数组进行一次排序，找到分割点
+    private static int partition(int[] A, int begin, int end) {
+        //选一个分割元素
+        int x = A[end];
+        //指针，标记分割点
+        int i = begin;
+        //使用插入排序的思想把数组分为大于X和小于X的两部分
+        for (int j = i; j < end; j++) {
+            if (A[j] < x) {
+                swap(A, i, j);
+                i++;
+            }
+        }
+        swap(A, i, end);
+        return i;
+    }
+
+    public static void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    private static void quickSortB(int[] a, int low, int high) {
+        if (low >= high) {
+            return;
+        }
+        if (a == null || a.length == 1) {
+            return;
+        }
+        int pivot = a[low];
+        int left = low;
+        int right = high;
+        if (left < right) {
+            while (left < right) {
+                //因为先进行的左侧赋值，所以需要先从右侧开始比较
+                while (left < right && pivot <= a[right]) {
+                    right--;
+                }
+                a[left] = a[right];
+                while (left < right && pivot >= a[left]) {
+                    left++;
+                }
+                a[right] = a[left];
+            }
+            a[left] = pivot;
+
+            quickSortB(a, low, left - 1);
+            quickSortB(a, left + 1, high);
+        }
+    }
+
+    public static void mergeSort(int[] a, int begin, int end) {
+        if (begin >= end) {
+            return;
+        }
+        if (a == null || a.length == 1) {
+            return;
+        }
+        int mid = (begin + end) / 2;
+        mergeSort(a, begin, mid);
+        mergeSort(a, mid + 1, end);
+        merge(a, begin, mid, end);
+    }
+
+    /**
+     * 合并两个有序数组
+     *
+     * @param array
+     * @param begin l1有序数组的开始
+     * @param mid   l1有序数组的结束 l1和l2的分界点
+     * @param end   l2数组的结束
+     */
+    private static void merge(int[] array, int begin, int mid, int end) {
+        int[] temp = new int[end - begin + 1];
+        int k = 0;
+        int l1 = begin;
+        int l2 = mid + 1;
+        while (l1 <= mid && l2 <= end) {
+            if (array[l1] <= array[l2]) {
+                temp[k++] = array[l1];
+                l1++;
+            } else {
+                temp[k++] = array[l2];
+                l2++;
+            }
+        }
+        int restStartIndex = 0;
+        int restEndIndex = 0;
+        if (l1 > mid) {
+            restStartIndex = l2;
+            restEndIndex = end;
+        } else {
+            restStartIndex = l1;
+            restEndIndex = mid;
+        }
+        while (restStartIndex <= restEndIndex) {
+            temp[k++] = array[restStartIndex++];
+        }
+        for (int i = 0; i < end - begin + 1; i++) {
+            array[begin + i] = temp[i];
+        }
+    }
 }

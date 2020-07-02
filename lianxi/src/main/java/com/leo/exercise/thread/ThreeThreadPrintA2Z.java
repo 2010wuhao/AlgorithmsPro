@@ -9,8 +9,23 @@ public class ThreeThreadPrintA2Z {
     int threadCount;
     int time = 0;
 
+    /**
+     * @param threadCount 几个线程
+     * @param printCount  打印多少次
+     */
+    public void print(int threadCount, int printCount) {
+        this.printCount = printCount;
+        this.threadCount = threadCount;
+        System.out.println("printCount = " + printCount + " threadCount = " + threadCount);
+        for (int i = 0; i < threadCount; i++) {
+            PrinterThread p0 = new PrinterThread(i);
+            p0.start();
+        }
+    }
+
     class PrinterThread extends Thread {
         int id;
+
         PrinterThread(int id) {
             this.id = id;
         }
@@ -37,20 +52,10 @@ public class ThreeThreadPrintA2Z {
                     if (time > printCount) {
                         return;
                     }
-                    System.out.println("thread" + id + " print " + time );
+                    System.out.println("thread" + id + " print " + time);
                     lock.notifyAll();
                 }
             }
-        }
-    }
-
-    public void print(int threadCount, int printCount) {
-        this.printCount = printCount;
-        this.threadCount = threadCount;
-        System.out.println("printCount = " + printCount + " threadCount = " + threadCount);
-        for (int i = 0; i < threadCount; i++) {
-            PrinterThread p0 = new PrinterThread(i);
-            p0.start();
         }
     }
 }
