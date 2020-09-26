@@ -1,4 +1,4 @@
-package com.leo.exercise.array;
+package com.leo.exercise.string;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,3 +1,4 @@
+include ':pattern'
 rootProject.name = 'AlgorithmsPro'
 include ':app'
 include ':lianxi'
